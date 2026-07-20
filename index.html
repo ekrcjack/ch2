@@ -28,6 +28,7 @@ header.top{
 .top-in{max-width:1080px;margin:0 auto;padding:12px 16px 0}
 .top h1{font-size:1.15rem;margin:0 0 2px;font-weight:700}
 .top p{margin:0;color:var(--sub);font-size:.82rem}
+.title-row{display:flex;align-items:center;justify-content:space-between;gap:14px;flex-wrap:wrap}
 .tabs{display:flex;gap:8px;margin-top:10px}
 .tab{
   appearance:none;border:1px solid var(--line);background:var(--card);color:var(--sub);
@@ -35,8 +36,8 @@ header.top{
   border-bottom:none;transition:.15s;
 }
 .tab.active{color:#fff;background:var(--accent);border-color:var(--accent)}
-.toolbar{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
-.search{flex:1;min-width:180px;display:flex;align-items:center;gap:8px;background:var(--card);
+.toolbar{display:flex;gap:10px;align-items:center;flex:0 0 auto;min-width:0}
+.search{flex:0 1 110px;min-width:70px;display:flex;align-items:center;gap:8px;background:var(--card);
   border:1px solid var(--line);border-radius:10px;padding:8px 12px}
 .search input{border:none;outline:none;background:none;flex:1;font-size:.95rem;color:var(--ink)}
 .btn-stop{appearance:none;border:1px solid var(--line);background:var(--card);color:var(--sub);
@@ -110,23 +111,23 @@ footer{max-width:1080px;margin:0 auto;padding:16px;color:var(--sub);font-size:.7
 <body>
 <header class="top">
   <div class="top-in">
-    <h1>N5 必背單字 ・ 常用漢字 100 <span style="font-weight:400;color:var(--sub);font-size:.85rem">發音練習</span></h1>
-    <p>取自「JLPT N5 完整學習筆記」第二章・第三章｜每字附例句與發音，可整類連續播放</p>
+    <div class="title-row">
+      <h1>N5 單字漢字 <span style="font-weight:400;color:var(--sub);font-size:.85rem">發音練習</span></h1>
+      <div class="toolbar">
+        <label class="search">
+          <span aria-hidden="true">🔍</span>
+          <input id="q" type="search" placeholder="搜尋" autocomplete="off">
+        </label>
+        <button class="btn-stop" id="stopBtn">■ 停止</button>
+      </div>
+    </div>
     <div class="tabs">
-      <button class="tab active" data-ch="ch2">第二章 ・ 必背單字</button>
-      <button class="tab" data-ch="ch3">第三章 ・ 常用漢字</button>
+      <button class="tab active" data-ch="ch2">必背單字</button>
+      <button class="tab" data-ch="ch3">常用漢字</button>
     </div>
   </div>
+  <nav class="chipnav" id="chipnav"></nav>
 </header>
-
-<div class="toolbar">
-  <label class="search">
-    <span aria-hidden="true">🔍</span>
-    <input id="q" type="search" placeholder="搜尋單字 / 假名 / 中文…" autocomplete="off">
-  </label>
-  <button class="btn-stop" id="stopBtn">■ 停止播放</button>
-</div>
-<nav class="chipnav" id="chipnav"></nav>
 
 <main id="main"></main>
 
