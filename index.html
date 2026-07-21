@@ -31,11 +31,11 @@ header.top{
 .head-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
 .head-title{min-width:0}
 .head-tools{display:flex;gap:8px;align-items:center;flex:0 0 auto}
-.tabs{display:flex;gap:8px;margin-top:10px}
+.tabs{display:flex;gap:6px;margin-top:10px;flex-wrap:nowrap}
 .tab{
   appearance:none;border:1px solid var(--line);background:var(--card);color:var(--sub);
-  padding:8px 16px;border-radius:10px 10px 0 0;font-size:.95rem;font-weight:600;cursor:pointer;
-  border-bottom:none;transition:.15s;
+  padding:7px 12px;border-radius:10px 10px 0 0;font-size:.92rem;font-weight:600;cursor:pointer;
+  border-bottom:none;transition:.15s;white-space:nowrap;flex:0 0 auto;
 }
 .tab.active{color:#fff;background:var(--accent);border-color:var(--accent)}
 .toolbar{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
@@ -121,6 +121,8 @@ footer{max-width:1080px;margin:0 auto;padding:16px;color:var(--sub);font-size:.7
   .word{font-size:1.35rem}
   .grid{grid-template-columns:1fr}
   .top h1{font-size:1.02rem}
+  .tabs{gap:5px}
+  .tab{padding:6px 9px;font-size:.85rem}
 }
 @media (prefers-reduced-motion:reduce){.say.playing{animation:none}}
 </style>
@@ -140,7 +142,7 @@ footer{max-width:1080px;margin:0 auto;padding:16px;color:var(--sub);font-size:.7
       </div>
     </div>
     <div class="tabs">
-      <button class="tab active" data-ch="ch2">單字</button>
+      <button class="tab active" data-ch="ch2">必背</button>
       <button class="tab" data-ch="ch3">漢字</button>
       <button class="tab" data-ch="verb">動詞</button>
       <button class="tab" data-ch="adj">ADJ</button>
