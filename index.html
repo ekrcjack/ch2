@@ -122,7 +122,7 @@ footer{max-width:1080px;margin:0 auto;padding:16px;color:var(--sub);font-size:.7
   .grid{grid-template-columns:1fr}
   .top h1{font-size:1.02rem}
   .tabs{gap:5px}
-  .tab{padding:6px 9px;font-size:.85rem}
+  .tab{padding:6px 9px;font-size:.95rem}
 }
 @media (prefers-reduced-motion:reduce){.say.playing{animation:none}}
 </style>
@@ -216,7 +216,7 @@ function cardADJ(it){
     <div class="ant">
       <span class="ant-mark">⇄ 反義</span>
       <button class="word jp" data-text="${esc(a.k||a.w)}" title="點擊發音">${esc(a.w)}</button>
-      <span class="kana jp">${esc(a.k)}</span>
+      <span class="kana jp">${esc(a.k)}</span>${a.r?`<span class="romaji">${esc(a.r)}</span>`:''}
       <span class="mean">${meanHTML(a.m)}</span>
     </div>` : '';
   const antEx = (a && a.ex) ? `
