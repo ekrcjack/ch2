@@ -313,9 +313,9 @@ function render(ch){
       chips += `<a href="#${id}">${esc(short)}</a>`;
     }
     const playBtns = ch === 'kana50'
-      ? `<button class="play-all play-kana50"><span class="ico"></span> 全部播放平假名</button>
+      ? `<button class="play-all play-kana50"><span class="ico"></span> 全部播放單字（中→日）</button>
         <button class="play-all play-ex-zhja"><span class="ico"></span> 播放例句（中→日）</button>`
-      : `<button class="play-all"><span class="ico"></span> 全部播放</button>
+      : `<button class="play-all"><span class="ico"></span> 全部播放例句（中→日）</button>
         <button class="play-all play-zhja"><span class="ico"></span> 播放中日</button>`;
     html += `<section class="cat" id="${id}">
       <div class="cat-h">
@@ -329,7 +329,7 @@ function render(ch){
       const gridId = gid+'-grid';
       if(g.sub){
         const groupBtns = (ch === 'kana50') ? `
-          <button class="play-all play-kana50-g" data-target="${gridId}"><span class="ico"></span> 播放單字</button>
+          <button class="play-all play-kana50-g" data-target="${gridId}"><span class="ico"></span> 播放單字（中→日）</button>
           <button class="play-all play-ex-zhja-g" data-target="${gridId}"><span class="ico"></span> 播放例句</button>` : '';
         html += `<div class="subhead" id="${gid}">${esc(g.sub)}${groupBtns}</div>`;
         if(!multiCat) chips += `<a href="#${gid}">${esc(g.sub)}</a>`;
@@ -431,25 +431,17 @@ function speakSequence(btn, items){
   })();
 }
 function speakSection(btn){
-  const sec = btn.closest('.cat');
-  const items = [...sec.querySelectorAll('.card:not(.hidden) .say.ex')]
-    .map(b=>b.dataset.text).filter(Boolean).map(text=>({text, lang:'ja-JP'}));
-  speakSequence(btn, items);
+  speakSequence(btn, collectExamplesZhJa(btn.closest('.cat')));
 }
-function speakZhJa(btn){
-  const sec = btn.closest('.cat');
+function collectMeanWordZhJa(container){
   const items = [];
-  sec.querySelectorAll('.card:not(.hidden)').forEach(card=>{
+  container.querySelectorAll('.card:not(.hidden)').forEach(card=>{
     const mean = card.dataset.mean;
     const word = card.querySelector('.word')?.dataset.text;
     if(mean) items.push({text:mean, lang:'zh-TW'});
     if(word) items.push({text:word, lang:'ja-JP'});
   });
-  speakSequence(btn, items);
-}
-function collectWords(container){
-  return [...container.querySelectorAll('.card:not(.hidden) .word')]
-    .map(b=>b.dataset.text).filter(Boolean).map(text=>({text, lang:'ja-JP'}));
+  return items;
 }
 function collectExamplesZhJa(container){
   const items = [];
@@ -461,15 +453,18 @@ function collectExamplesZhJa(container){
   });
   return items;
 }
+function speakZhJa(btn){
+  speakSequence(btn, collectMeanWordZhJa(btn.closest('.cat')));
+}
 function speakAllKanaWords(btn){
-  speakSequence(btn, collectWords(btn.closest('.cat')));
+  speakSequence(btn, collectMeanWordZhJa(btn.closest('.cat')));
 }
 function speakExamplesZhJa(btn){
   speakSequence(btn, collectExamplesZhJa(btn.closest('.cat')));
 }
 function speakGroupWords(btn){
   const grid = document.getElementById(btn.dataset.target);
-  if(grid) speakSequence(btn, collectWords(grid));
+  if(grid) speakSequence(btn, collectMeanWordZhJa(grid));
 }
 function speakGroupExamplesZhJa(btn){
   const grid = document.getElementById(btn.dataset.target);
