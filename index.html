@@ -315,6 +315,9 @@ function render(ch){
     const playBtns = ch === 'kana50'
       ? `<button class="play-all play-kana50"><span class="ico"></span> 全部播放單字（中→日）</button>
         <button class="play-all play-ex-zhja"><span class="ico"></span> 播放例句（中→日）</button>`
+      : ch === 'kana'
+      ? `<button class="play-all"><span class="ico"></span> 全部播放例句（中→日）</button>
+        <button class="play-all play-zhja-kana"><span class="ico"></span> 播放中日</button>`
       : `<button class="play-all"><span class="ico"></span> 全部播放例句（中→日）</button>
         <button class="play-all play-zhja"><span class="ico"></span> 播放中日</button>`;
     html += `<section class="cat" id="${id}">
@@ -443,6 +446,16 @@ function collectMeanWordZhJa(container){
   });
   return items;
 }
+function collectWordMeanJaZh(container){
+  const items = [];
+  container.querySelectorAll('.card:not(.hidden)').forEach(card=>{
+    const mean = card.dataset.mean;
+    const word = card.querySelector('.word')?.dataset.text;
+    if(word) items.push({text:word, lang:'ja-JP'});
+    if(mean) items.push({text:mean, lang:'zh-TW'});
+  });
+  return items;
+}
 function collectExamplesZhJa(container){
   const items = [];
   container.querySelectorAll('.card:not(.hidden)').forEach(card=>{
@@ -454,7 +467,33 @@ function collectExamplesZhJa(container){
   return items;
 }
 function speakZhJa(btn){
-  speakSequence(btn, collectMeanWordZhJa(btn.closest('.cat')));
+  speakSequence(btn, collectWordMeanJaZh(btn.closest('.cat')));
+}
+function parseKanaWordMeaning(m){
+  const i1 = (m||'').indexOf('／');
+  if(i1 < 0) return null;
+  const hira = m.slice(0, i1);
+  const rest = m.slice(i1+1);
+  const i2 = rest.indexOf('　');
+  if(i2 < 0) return null;
+  const rest2 = rest.slice(i2+1);
+  const i3 = rest2.indexOf('　');
+  if(i3 < 0) return null;
+  const meaning = rest2.slice(i3+1);
+  return { hira, meaning };
+}
+function collectKanaWordMeaningJaZh(container){
+  const items = [];
+  container.querySelectorAll('.card:not(.hidden)').forEach(card=>{
+    const parsed = parseKanaWordMeaning(card.dataset.mean || '');
+    if(!parsed) return;
+    items.push({text:parsed.hira, lang:'ja-JP'});
+    items.push({text:parsed.meaning, lang:'zh-TW'});
+  });
+  return items;
+}
+function speakKanaJaZh(btn){
+  speakSequence(btn, collectKanaWordMeaningJaZh(btn.closest('.cat')));
 }
 function speakAllKanaWords(btn){
   speakSequence(btn, collectMeanWordZhJa(btn.closest('.cat')));
@@ -479,6 +518,8 @@ document.addEventListener('click', e=>{
   if(pk){ speakAllKanaWords(pk); return; }
   const pe = e.target.closest('.play-ex-zhja');
   if(pe){ speakExamplesZhJa(pe); return; }
+  const pzk = e.target.closest('.play-zhja-kana');
+  if(pzk){ speakKanaJaZh(pzk); return; }
   const pz = e.target.closest('.play-zhja');
   if(pz){ speakZhJa(pz); return; }
   const pa = e.target.closest('.play-all');
