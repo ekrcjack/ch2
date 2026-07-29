@@ -453,6 +453,10 @@ function collectWordMeanJaZh(container){
     const word = card.querySelector('.word')?.dataset.text;
     if(word) items.push({text:word, lang:'ja-JP'});
     if(mean) items.push({text:mean, lang:'zh-TW'});
+    const antWord = card.querySelector('.ant .word')?.dataset.text;
+    const antMean = card.querySelector('.ant .mean')?.textContent;
+    if(antWord) items.push({text:antWord, lang:'ja-JP'});
+    if(antMean) items.push({text:antMean, lang:'zh-TW'});
   });
   return items;
 }
