@@ -480,10 +480,13 @@ function collectWordMeanJaZh(container){
 function collectExamplesZhJa(container){
   const items = [];
   container.querySelectorAll('.card:not(.hidden)').forEach(card=>{
-    const zh = card.querySelector('.ex-zh')?.textContent;
-    const ja = card.querySelector('.say.ex')?.dataset.text;
-    if(zh) items.push({text:zh, lang:'zh-TW'});
-    if(ja) items.push({text:ja, lang:'ja-JP'});
+    /* 一張卡可能有多組例句（形容詞卡的反義例句 .ex-ant），逐組收集 */
+    card.querySelectorAll('div.ex').forEach(ex=>{
+      const zh = ex.querySelector('.ex-zh')?.textContent;
+      const ja = ex.querySelector('.say.ex')?.dataset.text;
+      if(zh) items.push({text:zh, lang:'zh-TW'});
+      if(ja) items.push({text:ja, lang:'ja-JP'});
+    });
   });
   return items;
 }
